@@ -47,7 +47,7 @@ public class Car {
 
     //  cannnot be updated
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDate createdAt = LocalDate.now();
+    private final LocalDate createdAt = LocalDate.now();
 
     //  default Constructors
     public Car() {

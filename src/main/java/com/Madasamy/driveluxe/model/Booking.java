@@ -1,6 +1,7 @@
 package com.Madasamy.driveluxe.model;
 
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Hidden
     private int id;
     /**
      * customerName.
@@ -40,55 +42,113 @@ public class Booking {
      */
     private LocalDateTime bookingDate = LocalDateTime.now();
 
-
+    /**
+     * URL of the image associated with the entity. Can be null.
+     */
     @Column(nullable = true)
     private String imageUrl;
 
     public enum BookingStatus {
+
+        /**
+         * Booking has been submitted by the user but not yet confirmed.
+         */
         SUBMITTED,
+
+        /**
+         * Booking has been confirmed.
+         */
         CONFIRMED,
+
+        /**
+         * Booking was cancelled by the user or system.
+         */
         CANCELLED,
+
+        /**
+         * Booking was delivered or completed.
+         */
         DELIVERED
     }
 
+    /**
+     * Current status of the booking.
+     * Stored as a string in the database. Defaults to SUBMITTED.
+     */
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus = BookingStatus.SUBMITTED;
 
+    /**
+     * Reason provided for booking cancellation.
+     */
     @Column(name = "cancellation_reason")
     private String cancellationReason;
 
     //  Foreign Key Mapping
+    /**
+     * The car associated with the booking.
+     */
     @ManyToOne
     @JoinColumn(name = "car_id", nullable = false)
 
     private Car car;
 
+    /**
+     * The user who made the booking.
+     */
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
 
     private User user;
+    /**
+     * Constructs a new Booking with the given details.
+     *
+     * @param bookingCar the car being booked
+     * @param bookingUser the user making the booking
+     * @param bookingcustomerName the name of the customer
+     * @param bookingemail the customer's email address
+     * @param bookingphoneNumber the customer's phone number
+     * @param bookingaddress the customer's address
+     * @param bookingimageUrl optional image URL for the booking
+     */
+    public Booking(
+            final Car bookingCar,
+            final User bookingUser,
+            final String bookingcustomerName,
+            final String bookingemail,
+            final String bookingphoneNumber,
+            final String bookingaddress,
+            final String bookingimageUrl) {
 
-    //  Constructors
-    public Booking() {}
-
-    public Booking(Car car, User user, String customerName, String email, String phoneNumber, String address, String imageUrl) {
-        this.car = car;
-        this.user = user;
-        this.customerName = customerName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
+        this.car = bookingCar;
+        this.user = bookingUser;
+        this.customerName = bookingcustomerName;
+        this.email = bookingemail;
+        this.phoneNumber = bookingphoneNumber;
+        this.address = bookingaddress;
         this.bookingDate = LocalDateTime.now();
-        this.imageUrl = imageUrl;
+        this.imageUrl = bookingimageUrl;
         this.bookingStatus = BookingStatus.SUBMITTED;
     }
 
-    //  Getters and Setters
-    public int getId() {
+
+
+    /**
+     * Gets the booking ID.
+     *
+     * @return the ID of the booking
+     */
+    public final int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    /**
+     * Sets the booking ID.
+     *
+     * @param id the ID to set
+     */
+
+    public final void setId(final int id) {
         this.id = id;
     }
 

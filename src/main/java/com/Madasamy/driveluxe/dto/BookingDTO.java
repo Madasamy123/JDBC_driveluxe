@@ -2,14 +2,14 @@ package com.Madasamy.driveluxe.dto;
 
 public class BookingDTO {
     private int id;
-    private String customerName;
-    private String email;
-    private String phoneNumber;
-    private String address;
-    private Integer carId;
-    private String bookingDate;
-    private String imageUrl;
-    private String bookingStatus;
+    private final String customerName;
+    private final String email;
+    private final String phoneNumber;
+    private final String address;
+    private final Integer carId;
+    private final String bookingDate;
+    private final String imageUrl;
+    private final String bookingStatus;
 
 
 
