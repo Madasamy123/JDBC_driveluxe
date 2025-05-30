@@ -9,15 +9,37 @@ import java.time.LocalDateTime;
 @Table(name = "bookings")
 public class Booking {
 
+    /**
+     * Primary key identifier for the entity.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    /**
+     * customerName.
+     */
     private String customerName;
+    /**
+     * User's email address.
+     */
     private String email;
+
+    /**
+     * User's phone number.
+     */
     private String phoneNumber;
+
+    /**
+     * User's physical address.
+     */
     private String address;
+
+    /**
+     * Date and time when the booking was made. Defaults to current time.
+     */
     private LocalDateTime bookingDate = LocalDateTime.now();
+
 
     @Column(nullable = true)
     private String imageUrl;

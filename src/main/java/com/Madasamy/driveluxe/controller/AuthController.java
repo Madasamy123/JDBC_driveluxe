@@ -22,40 +22,65 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class AuthController {
 
+    /**
+     * Service for user-related operations.
+     */
     @Autowired
     private UserService userService;
 
+    /**
+     * Utility class for handling JWT operations.
+     */
     @Autowired
     private JwtUtil jwtUtil;
 
+    /**
+     * Encoder for hashing user passwords using BCrypt.
+     */
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    /**
+     * Registers a new user.
+     *
+     * @param registerRequest the login credentials
+     * @return a response entity indicating success or failure
+     */
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<String> register(
+            @RequestBody final RegisterRequest registerRequest) {
         if (userService.findByEmail(registerRequest.getEmail()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "User already exists!");
         }
 
-        //  Check if the email is for admin; if yes, assign "ADMIN", otherwise "USER"
+        //Check if the email is for admin;if yes,assign "ADMIN",otherwise "USER"
         String role = "USER";
         if (registerRequest.getEmail().equalsIgnoreCase("admin@gmail.com")) {
             role = "ADMIN";
         }
 
-        String hashedPassword = userService.encodePassword(registerRequest.getPassword());
+        String hashedPassword = userService.encodePassword(
+                registerRequest.getPassword());
 
         User user = new User(registerRequest.getEmail(), hashedPassword, role);
         userService.save(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");
+        return ResponseEntity.status(
+                HttpStatus.CREATED).body("User registered successfully!");
     }
 
 
 
-
+    /**
+     * Authenticates a user and returns a JWT token if successful.
+     *
+     * @param loginRequest the login credentials
+     * @return a map containing the JWT token or an error message
+     */
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody LoginRequest loginRequest) {
+    public Map<String, String> login(
+            @RequestBody final LoginRequest loginRequest) {
         String useremail = loginRequest.getUseremail();
         String password = loginRequest.getPassword();
 
@@ -63,7 +88,8 @@ public class AuthController {
 
         Map<String, String> response = new HashMap<>();
 
-        if (userOptional.isPresent() && passwordEncoder.matches(password, userOptional.get().getPassword())) {
+        if (userOptional.isPresent() && passwordEncoder.matches(
+                password, userOptional.get().getPassword())) {
             String token = jwtUtil.generateToken(useremail);
             String role = userOptional.get().getRole();
             response.put("token", token);
@@ -74,31 +100,4 @@ public class AuthController {
 
         return response;
     }
-
-
-
-//    @PostMapping("/login")
-//    public Map<String, String> login(@RequestBody Map<String, String> userMap) {
-//        String useremail = userMap.get("useremail");
-//        String password = userMap.get("password");
-//
-//        Optional<User> userOptional = userService.findByEmail(useremail);
-//
-//        Map<String, String> response = new HashMap<>();
-//
-//        if (userOptional.isPresent() && passwordEncoder.matches(password, userOptional.get().getPassword())) {
-//            String token = jwtUtil.generateToken(useremail);
-//            String role = userOptional.get().getRole();  // Fetch role from user
-//            response.put("token", token);
-//            response.put("role", role);  // Include role in the response
-//        } else {
-//            response.put("error", "Invalid email or password");
-//        }
-//        return response;
-//    }
-
-
-
-
-
 }
