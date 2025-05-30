@@ -1,49 +1,39 @@
 package com.Madasamy.driveluxe.model;
 
-import jakarta.persistence.*;
-
-// decimal value
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
+/**
+ * Represents a car entity with various details.
+ */
+public final class Car {
 
-// Maps to 'cars' table in MySQL
-@Entity
-@Table(name = "cars")
-public class Car {
+    /** Unique identifier for the car. */
+    private Long carId;
 
-
-    @Id            //  primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY)    // Auto-incremented ID by database
-    @Column(name="car_id")
-    private int carId;
-
-
-    @Column(nullable = false, length = 100)
+    /** Brand of the car. */
     private String brand;
 
-    @Column(nullable = false, length = 100)
+    /** Model of the car. */
     private String model;
 
-    @Column(nullable = false, length = 100)
+    /** Variant of the car model. */
     private String variant;
 
-    @Column(name = "fuel_type", nullable = false)
+    /** Type of fuel used by the car. */
     private String fuelType;
 
-
-    @Column(nullable = false)
+    /** Manufacturing year of the car. */
     private int year;
 
-    //  total 10 numbers , after (.) 2 numbers
-    @Column(nullable = false, precision = 10, scale = 2)
+    /** Price of the car. */
     private BigDecimal price;
 
-    @Column(nullable = false)
+    /** Quantity of the car in stock. */
     private int stockQuantity;
 
-    @Column(nullable = false, length = 255)
+    /** Image URL of the car. */
     private String imageUrl;
+
 
     //  cannnot be updated
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -68,82 +58,208 @@ public class Car {
 
     //  Getters and Setters
     public int getCarId() {
+
+    /**
+     * Private constructor for Car using Builder.
+     *
+     * @param builder the builder instance
+     */
+    private Car(final Builder builder) {
+        this.carId = builder.builderCarId;
+        this.brand = builder.builderBrand;
+        this.model = builder.builderModel;
+        this.variant = builder.builderVariant;
+        this.fuelType = builder.builderFuelType;
+        this.year = builder.builderYear;
+        this.price = builder.builderPrice;
+        this.stockQuantity = builder.builderStockQuantity;
+        this.imageUrl = builder.builderImageUrl;
+    }
+
+    /** @return the car ID */
+    public Long getCarId() {
+
         return carId;
     }
 
-    public void setCarId(int carId) {
-        this.carId = carId;
-    }
-
+    /** @return the brand */
     public String getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
+    /** @return the model */
     public String getModel() {
         return model;
     }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
-
+    /** @return the variant */
     public String getVariant() {
         return variant;
     }
 
-    public void setVariant(String variant) {
-        this.variant = variant;
-    }
-
-
+    /** @return the fuel type */
     public String getFuelType() {
         return fuelType;
     }
 
-    public void setFuelType(String fuelType) {
-        this.fuelType = fuelType;
-    }
-
-
+    /** @return the year */
     public int getYear() {
         return year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
-
+    /** @return the price */
     public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
+    /** @return the stock quantity */
     public int getStockQuantity() {
         return stockQuantity;
     }
 
-    public void setStockQuantity(int stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
-
+    /** @return the image URL */
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    /**
+     * Builder class for Car.
+     */
+    public static class Builder {
+
+        /** Car ID. */
+        private Long builderCarId;
+
+        /** Brand of the car. */
+        private String builderBrand;
+
+        /** Model of the car. */
+        private String builderModel;
+
+        /** Variant of the car. */
+        private String builderVariant;
+
+        /** Fuel type of the car. */
+        private String builderFuelType;
+
+        /** Manufacturing year. */
+        private int builderYear;
+
+        /** Price of the car. */
+        private BigDecimal builderPrice;
+
+        /** Quantity in stock. */
+        private int builderStockQuantity;
+
+        /** Image URL. */
+        private String builderImageUrl;
+
+        /**
+         * Sets the car ID.
+         *
+         * @param carId the car ID
+         * @return the builder
+         */
+        public Builder withCarId(final Long carId) {
+            this.builderCarId = carId;
+            return this;
+        }
+
+        /**
+         * Sets the brand.
+         *
+         * @param brand the brand
+         * @return the builder
+         */
+        public Builder withBrand(final String brand) {
+            this.builderBrand = brand;
+            return this;
+        }
+
+        /**
+         * Sets the model.
+         *
+         * @param model the model
+         * @return the builder
+         */
+        public Builder withModel(final String model) {
+            this.builderModel = model;
+            return this;
+        }
+
+        /**
+         * Sets the variant.
+         *
+         * @param variant the variant
+         * @return the builder
+         */
+        public Builder withVariant(final String variant) {
+            this.builderVariant = variant;
+            return this;
+        }
+
+        /**
+         * Sets the fuel type.
+         *
+         * @param fuelType the fuel type
+         * @return the builder
+         */
+        public Builder withFuelType(final String fuelType) {
+            this.builderFuelType = fuelType;
+            return this;
+        }
+
+        /**
+         * Sets the year.
+         *
+         * @param year the year
+         * @return the builder
+         */
+        public Builder withYear(final int year) {
+            this.builderYear = year;
+            return this;
+        }
+
+        /**
+         * Sets the price.
+         *
+         * @param price the price
+         * @return the builder
+         */
+        public Builder withPrice(final BigDecimal price) {
+            this.builderPrice = price;
+            return this;
+        }
+
+        /**
+         * Sets the stock quantity.
+         *
+         * @param stockQuantity the stock quantity
+         * @return the builder
+         */
+        public Builder withStockQuantity(final int stockQuantity) {
+            this.builderStockQuantity = stockQuantity;
+            return this;
+        }
+
+        /**
+         * Sets the image URL.
+         *
+         * @param imageUrl the image URL
+         * @return the builder
+         */
+        public Builder withImageUrl(final String imageUrl) {
+            this.builderImageUrl = imageUrl;
+            return this;
+        }
+
+        /**
+         * Builds and returns the Car instance.
+         *
+         * @return the built Car object
+         */
+        public Car build() {
+            return new Car(this);
+        }
     }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-
 }
