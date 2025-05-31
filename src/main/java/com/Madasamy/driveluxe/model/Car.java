@@ -34,31 +34,6 @@ public final class Car {
     /** Image URL of the car. */
     private String imageUrl;
 
-
-    //  cannnot be updated
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private final LocalDate createdAt = LocalDate.now();
-
-    //  default Constructors
-    public Car() {
-    }
-
-
-    //  parameterized constructor
-    public Car(String brand, String model, String variant, int year, BigDecimal price, int stockQuantity, String imageUrl, String fuelType) {
-        this.brand = brand;
-        this.model = model;
-        this.variant = variant;
-        this.fuelType = fuelType;
-        this.year = year;
-        this.price = price;
-        this.stockQuantity = stockQuantity;
-        this.imageUrl = imageUrl;
-    }
-
-    //  Getters and Setters
-    public int getCarId() {
-
     /**
      * Private constructor for Car using Builder.
      *
@@ -78,7 +53,6 @@ public final class Car {
 
     /** @return the car ID */
     public Long getCarId() {
-
         return carId;
     }
 
